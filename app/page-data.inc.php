@@ -148,8 +148,9 @@ Class PageData {
     # page.lang_prefix
     $page->lang_prefix = Stacey::$language ? '/'.Stacey::$language : '';
     # page.lang_name
+    $page->lang_name = Config::$languages[(Stacey::$language ? Stacey::$language : Config::$languages['default'])];
     # page.languages
-
+    $page->languages = self::get_page_languages($page);
   }
 
   static function create_collections($page) {
@@ -254,6 +255,11 @@ Class PageData {
         $page->$key = trim($value);
       }
     }
+  }
+
+  static function get_page_languages($page) {
+    $languages = Helpers::list_files($page->file_path, '/\.(yml|txt)$/');
+    fb($languages);
   }
 
   static function html_to_xhtml(&$value) {
