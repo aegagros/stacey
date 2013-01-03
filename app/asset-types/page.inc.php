@@ -54,7 +54,10 @@ Class Page {
   }
 
   static function template_name($file_path) {
-    $txts = array_keys(Helpers::list_files($file_path, '/\.(yml|txt)/'));
+    # $pattern = '/\.(yml|txt)/';
+    $language = Stacey::$language ? Stacey::$language : Config::$languages['default'];
+    $pattern = '/(\.'.$language.')?\.(yml|txt)/';
+    $txts = array_keys(Helpers::list_files($file_path, $pattern));
     # return first matched .yml file
     return (!empty($txts)) ? preg_replace('/\.(yml|txt)/', '', $txts[0]) : false;
   }

@@ -4,6 +4,10 @@ Class Stacey {
 
   static $version = '3.0.0';
 
+  # aegagros
+  public static $language = '';
+  # end-aegagros
+
   var $route;
 
   function handle_redirects() {
@@ -122,6 +126,16 @@ Class Stacey {
 
     # strip any leading or trailing slashes from the passed url
     $key = key($get);
+
+    # get the list of available languages
+    $langs = array_keys(Config::$languages['available']);
+    # search the url string for any language specification - if found, store it in self::$language and remove it from url string
+    $pattern = '/^\/(' . implode('|', $langs) . ')/';
+    if (preg_match($pattern, $key, $matches)) {
+      self::$language = $matches[1];
+      $key = str_replace('/' . self::$language, '', $key);
+    }
+
     # if the key isn't a URL path, then ignore it
     if (!preg_match('/\//', $key)) $key = false;
     $key = preg_replace(array('/\/$/', '/^\//'), '', $key);

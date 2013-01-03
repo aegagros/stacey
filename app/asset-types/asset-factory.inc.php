@@ -12,7 +12,7 @@ Class AssetFactory {
     $page_path = implode('/', $path);
 
     # return any page data scoped against the asset filename
-    $page_data = self::$store[$page_path];
+    $page_data = self::get($page_path);
     return isset($page_data[$file_name]) ? $page_data[$file_name] : false;
   }
 

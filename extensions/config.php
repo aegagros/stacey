@@ -8,6 +8,13 @@ class Config {
   public static $templates_folder = './templates';
   public static $cache_folder = './app/_cache';
   public static $extensions_folder = './extensions';
+  public static $languages = array(
+    'default' => 'el',
+    'available' => array(
+      'el' => 'Ελληνικά',
+      'en' => 'English',
+    ),
+  );
 
 }
 

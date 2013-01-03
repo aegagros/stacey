@@ -93,12 +93,14 @@ Class PageData {
   }
 
   static function create_vars($page) {
+    # language prefix
+    $prefix = Stacey::$language ? Stacey::$language . '/' : '';
     # page.file_path
     $page->data['file_path'] = $page->file_path;
     # page.url
-    $page->url = Helpers::relative_root_path($page->url_path.'/');
+    $page->url = Helpers::relative_root_path($prefix.$page->url_path.'/');
     # page.permalink
-    $page->permalink = Helpers::modrewrite_parse($page->url_path.'/');
+    $page->permalink = Helpers::modrewrite_parse($prefix.$page->url_path.'/');
     # page.slug
     $split_url = explode("/", $page->url_path);
     $page->slug = $split_url[count($split_url) - 1];
@@ -140,6 +142,13 @@ Class PageData {
 
 	  # page.cache_page
     $page->bypass_cache = isset($page->data['bypass_cache']) && $page->data['bypass_cache'] !== 'false' ? $page->data['bypass_cache'] : false;
+
+    # page.home_path
+    $page->home_path =  Helpers::relative_root_path($prefix);
+    # page.lang_prefix
+    $page->lang_prefix = Stacey::$language ? '/'.Stacey::$language : '';
+    # page.lang_name
+    # page.languages
 
   }
 
@@ -202,7 +211,20 @@ Class PageData {
       $vars = sfYaml::load($content);
     } else {
       $content_file = sprintf('%s/%s', $page->file_path, $page->template_name);
-      $content_file_path = file_exists($content_file.'.yml') ? $content_file.'.yml' : $content_file.'.txt' ;
+      $language = Stacey::$language ? Stacey::$language : Config::$languages['default'];
+      if (file_exists($content_file.$language.'.yml')) {
+        $content_file_path = $content_file.$language.'.yml';
+      }
+      else if (file_exists($content_file.$language.'.txt')) {
+        $content_file_path = $content_file.$language.'.txt';
+      }
+      else if (file_exists($content_file.'.yml')) {
+        $content_file_path = $content_file.'.yml';
+      }
+      else if (file_exists($content_file.'.txt')) {
+        $content_file_path = $content_file.'.txt';
+      }
+      # $content_file_path = file_exists($content_file.'.yml') ? $content_file.'.yml' : $content_file.'.txt' ;
       if (!file_exists($content_file_path)) return;
       $vars = sfYaml::load($content_file_path);
     }
