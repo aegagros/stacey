@@ -9,10 +9,10 @@ class Config {
   public static $cache_folder = './app/_cache';
   public static $extensions_folder = './extensions';
   public static $languages = array(
-    'default' => 'el',
+    'default' => 'en',
     'available' => array(
-      'el' => 'Ελληνικά',
       'en' => 'English',
+      'el' => 'Ελληνικά',
     ),
   );
 

@@ -145,10 +145,10 @@ Class PageData {
 
     # page.home_path
     $page->home_path =  Helpers::relative_root_path($prefix);
-    # page.lang_prefix
-    $page->lang_prefix = Stacey::$language ? '/'.Stacey::$language : '';
+    # page.lang_code
+    $page->lang_code = Stacey::$language ? Stacey::$language : Config::$languages['default'];
     # page.lang_name
-    $page->lang_name = Config::$languages[(Stacey::$language ? Stacey::$language : Config::$languages['default'])];
+    $page->lang_name = Config::$languages['available'][(Stacey::$language ? Stacey::$language : Config::$languages['default'])];
     # page.languages
     $page->languages = self::get_page_languages($page);
   }
@@ -200,7 +200,21 @@ Class PageData {
 
   static function get_shared_data() {
     if (self::$shared) return self::$shared;
-    $shared_file_path = file_exists(Config::$content_folder.'/_shared.yml') ? Config::$content_folder.'/_shared.yml' : Config::$content_folder.'/_shared.txt';
+    $language = '.'.(Stacey::$language ? Stacey::$language : Config::$languages['default']);
+    $shared_file_path = '';
+    if (file_exists(Config::$content_folder.'/_shared'.$language.'.yml')) {
+      $shared_file_path = Config::$content_folder.'/_shared'.$language.'.yml';
+    }
+    else if (file_exists(Config::$content_folder.'/_shared'.$language.'.txt')) {
+      $shared_file_path = Config::$content_folder.'/_shared'.$language.'.txt';
+    }
+    else if (file_exists(Config::$content_folder.'/_shared.yml')) {
+      $shared_file_path = Config::$content_folder.'/_shared.yml';
+    }
+    else if (file_exists(Config::$content_folder.'/_shared.txt')) {
+      $shared_file_path = Config::$content_folder.'/_shared.txt';
+    }
+    # $shared_file_path = file_exists(Config::$content_folder.'/_shared.yml') ? Config::$content_folder.'/_shared.yml' : Config::$content_folder.'/_shared.txt';
     if (file_exists($shared_file_path)) {
       return self::$shared = sfYaml::load($shared_file_path);
     }
@@ -212,7 +226,7 @@ Class PageData {
       $vars = sfYaml::load($content);
     } else {
       $content_file = sprintf('%s/%s', $page->file_path, $page->template_name);
-      $language = Stacey::$language ? Stacey::$language : Config::$languages['default'];
+      $language = '.'.(Stacey::$language ? Stacey::$language : Config::$languages['default']);
       if (file_exists($content_file.$language.'.yml')) {
         $content_file_path = $content_file.$language.'.yml';
       }
@@ -258,8 +272,21 @@ Class PageData {
   }
 
   static function get_page_languages($page) {
-    $languages = Helpers::list_files($page->file_path, '/\.(yml|txt)$/');
-    fb($languages);
+    $languages = array();
+    $files = Helpers::list_files($page->file_path, '/\.(yml|txt)$/');
+    $available = array_keys(Config::$languages['available']);
+    $pattern = '/\.('.implode('|', $available).')/';
+    foreach($files as $file => $path) {
+      if (preg_match($pattern, $file, $matches)) {
+        $langcode = $matches[1];
+        $languages[] = array(
+          'code' => $langcode,
+          'name' => Config::$languages['available'][$langcode],
+          'path' => Helpers::relative_root_path($langcode.'/'),
+        );
+      }
+    }
+    return $languages;
   }
 
   static function html_to_xhtml(&$value) {

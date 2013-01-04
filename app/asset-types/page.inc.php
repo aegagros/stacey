@@ -18,6 +18,7 @@ Class Page {
     $this->template_name = self::template_name($this->file_path);
     $this->template_file = self::template_file($this->template_name);
     $this->template_type = self::template_type($this->template_file);
+
     # create/set all content variables
     PageData::create($this, $content);
   }
@@ -56,10 +57,21 @@ Class Page {
   static function template_name($file_path) {
     # $pattern = '/\.(yml|txt)/';
     $language = Stacey::$language ? Stacey::$language : Config::$languages['default'];
-    $pattern = '/(\.'.$language.')?\.(yml|txt)/';
+    # find any language-specific text files
+    $available = array_keys(Config::$available['available']);
+    $pattern = '/\.('.implode('|', $available).')\.(yml|txt)/');
+    $txts = array_keys(Helpers::list_files($file_path, $pattern));
+    if (!empty($txts)) {
+      foreach($txts as $txt) {
+        if (preg_match('/\.'.$language.'\.(yml|txt)/', $txt)) {
+          return preg_replace('/\.'.$language.'\.(yml|txt)/', '', $txt);
+        }
+      }
+    }
+    $pattern = '/\.(yml|txt)/');
     $txts = array_keys(Helpers::list_files($file_path, $pattern));
     # return first matched .yml file
-    return (!empty($txts)) ? preg_replace('/\.(yml|txt)/', '', $txts[0]) : false;
+    return (!empty($txts)) ? preg_replace($pattern, '', $txts[0]) : false;
   }
 
   static function template_file($template_name) {
