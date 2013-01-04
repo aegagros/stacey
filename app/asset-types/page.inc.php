@@ -58,8 +58,8 @@ Class Page {
     # $pattern = '/\.(yml|txt)/';
     $language = Stacey::$language ? Stacey::$language : Config::$languages['default'];
     # find any language-specific text files
-    $available = array_keys(Config::$available['available']);
-    $pattern = '/\.('.implode('|', $available).')\.(yml|txt)/');
+    $available = array_keys(Config::$languages['available']);
+    $pattern = '/\.('.implode('|', $available).')\.(yml|txt)/';
     $txts = array_keys(Helpers::list_files($file_path, $pattern));
     if (!empty($txts)) {
       foreach($txts as $txt) {
@@ -68,7 +68,7 @@ Class Page {
         }
       }
     }
-    $pattern = '/\.(yml|txt)/');
+    $pattern = '/\.(yml|txt)/';
     $txts = array_keys(Helpers::list_files($file_path, $pattern));
     # return first matched .yml file
     return (!empty($txts)) ? preg_replace($pattern, '', $txts[0]) : false;

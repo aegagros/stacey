@@ -1,0 +1,9 @@
+<ul id="language">
+  {% for language in page.languages %}
+    <li>
+      {% if page.lang_code != language.code %}
+        <a href="{{ language.url }}">{{ language.name }}</a>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

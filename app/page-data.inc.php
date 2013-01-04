@@ -279,10 +279,11 @@ Class PageData {
     foreach($files as $file => $path) {
       if (preg_match($pattern, $file, $matches)) {
         $langcode = $matches[1];
+        $path = Helpers::relative_root_path($langcode.'/'.$page->url_path.'/');
         $languages[] = array(
           'code' => $langcode,
           'name' => Config::$languages['available'][$langcode],
-          'path' => Helpers::relative_root_path($langcode.'/'),
+          'url' => $path,
         );
       }
     }

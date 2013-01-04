@@ -44,9 +44,10 @@ hr { display: block; clear: both; margin: 0px 0px 45px; padding: 0px; height: 0p
 .col hr { margin: 0px 0px 15px; }
 
 ul li { margin: 0px 0px 3px; }
-ul#navigation, ul.projects { list-style: none; padding: 0px; margin: 0px; }
+ul#navigation, ul.projects, ul#language { list-style: none; padding: 0px; margin: 0px; }
 ul#navigation { margin: 10px 0px 0px 20px; }
-ul#navigation li, ul.projects li { clear: both; }
+ul#language { margin: 60px 0px 0px 20px; }
+ul#navigation li, ul.projects li, ul#language { clear: both; }
 ul#navigation ol { display: none; margin: 0px; padding: 4px 0px 4px 25px; }
 ul.projects li { float: left; padding: 0px 0px 8px; }
 

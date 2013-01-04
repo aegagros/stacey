@@ -10,7 +10,7 @@
   <body>
     <div id="container" class="{{ page.id }}">
       <h1 class="col three">
-        <a href="{{ page.root_path }}">{{ page.name }}</a>
+        <a href="{{ page.home_path }}">{{ page.name }}</a>
         <strong>{{ page.profession }}</strong>
       </h1>
       <em class="col three">{{ page.email }}</em>
@@ -19,7 +19,7 @@
       <div id="content" class="col eight">
         <p class="date col one">&para;</p>
         <div class="description col six">
-          <h2 class="col six"><a href="{{ page.root_path }}">{{ page.title }}</a></h2>
+          <h2 class="col six"><a href="{{ page.home_path }}">{{ page.title }}</a></h2>
           {% include 'partials/assets/images.html' %}
           {{ page.content }}
           {% include 'partials/assets/pdfs.html' %}
