@@ -116,9 +116,14 @@ Class Helpers {
       if(preg_match('/\./', $_SERVER['REQUEST_URI'])) array_pop($split_path);
       # add a ../ for each parent folder
       for($i = 2; $i < count($split_path); $i++) $link_path .= '../';
+      # if language is specified in the url, skip another parent folder
+      if (Stacey::$language) {
+        $link_path .= '../';
+      }
     }
 
     $link_path = empty($link_path) ? './' : $link_path;
+    fb($link_path);
 
     return $link_path .= self::modrewrite_parse($url);
   }
