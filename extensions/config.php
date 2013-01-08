@@ -20,6 +20,11 @@ class Config {
       'en' => 'English',
       'el' => 'Ελληνικά',
     ),
+    # specify locales to use with the above languages (if not specified, no locale change will take place)
+    'locales' => array(
+      'en' => 'en_US',
+      'el' => 'el_GR',
+    ),
     # replace this with one of the above lang-codes to set default language, when none is specified in the url
     'default' => 'en',
   );

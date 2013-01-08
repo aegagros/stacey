@@ -121,10 +121,7 @@ Class Helpers {
         $link_path .= '../';
       }
     }
-
     $link_path = empty($link_path) ? './' : $link_path;
-    fb($link_path);
-
     return $link_path .= self::modrewrite_parse($url);
   }
 

@@ -136,6 +136,11 @@ Class Stacey {
       $key = str_replace('/' . self::$language, '', $key);
     }
 
+    # if we have a locale specified for the language, use it
+    if (self::$language && isset(Config::$languages['locales'][self::$language])) {
+      setlocale(LC_ALL, Config::$languages['locales'][self::$language]);
+    }
+
     # if the key isn't a URL path, then ignore it
     if (!preg_match('/\//', $key)) $key = false;
     $key = preg_replace(array('/\/$/', '/^\//'), '', $key);
