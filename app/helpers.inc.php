@@ -109,7 +109,8 @@ Class Helpers {
   static function relative_root_path($url = '') {
     global $current_page_file_path;
     $link_path = '';
-    if(!preg_match('/index/', $current_page_file_path) && !preg_match('/\/\?\//', $_SERVER['REQUEST_URI'])) {
+    $clean_url = !preg_match('/\/\?\//', $_SERVER['REQUEST_URI']);
+    if(!preg_match('/index/', $current_page_file_path) && $clean_url) {
       # split file path by slashes
       $split_path = explode('/', $current_page_file_path);
       # if the request uri is pointing at a document, drop another folder from the file path
@@ -117,9 +118,9 @@ Class Helpers {
       # add a ../ for each parent folder
       for($i = 2; $i < count($split_path); $i++) $link_path .= '../';
       # if language is specified in the url, skip another parent folder
-      if (Stacey::$language) {
-        $link_path .= '../';
-      }
+    }
+    if (Stacey::$language && $clean_url) {
+      $link_path .= '../';
     }
     $link_path = empty($link_path) ? './' : $link_path;
     return $link_path .= self::modrewrite_parse($url);
