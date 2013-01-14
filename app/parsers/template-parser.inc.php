@@ -22,6 +22,10 @@ Class TemplateParser {
       'autoescape' => false
     ));
     $twig->addExtension(new Stacey_Twig_Extension());
+    // if (function_exists('fb')) {
+    //   fb(Stacey::$language);
+    //   fb($data);
+    // }
     return $twig->render($template, array('page' => $data));
   }
 

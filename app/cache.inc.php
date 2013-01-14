@@ -15,9 +15,10 @@ Class Cache {
     $file_cache = serialize(Helpers::file_cache());
     $content_hash = $this->generate_hash($htaccess.$file_cache);
     # combine the two hashes to create a cachefile name
-    $this->cachefile = Config::$cache_folder.'/pages/'.$this->cache_prefix.$this->path_hash.'-'.$content_hash;
     # store the hash
-    $this->hash = $this->cache_prefix.$this->path_hash.'-'.$content_hash;
+    $language = Stacey::$language? Stacey::$language : Config::$languages['default'];
+    $this->hash = $this->cache_prefix.$this->path_hash.'-'.$content_hash.'-'.$language;
+    $this->cachefile = Config::$cache_folder.'/pages/'.$this->hash;
   }
 
   function generate_hash($str) {

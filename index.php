@@ -7,6 +7,7 @@ if(phpversion() < 5.2) {
 
 } else {
 
+  include_once '../firephp-core/lib/FirePHPCore/fb.php';
   # require config
   require_once './extensions/config.php';
   # require helpers class so we can use rglob
